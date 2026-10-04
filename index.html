@@ -39,6 +39,22 @@
   .sibling img { width:100%; border-radius:18px; border:1px solid var(--stroke); }
   footer { padding:40px 0 60px; color:var(--muted); font-size:14px; border-top:1px solid var(--stroke); margin-top:40px; }
   footer .links { display:flex; gap:18px; flex-wrap:wrap; margin-bottom:10px; }
+
+  .sim { position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--stroke); background:#050a17; }
+  .sim canvas { display:block; width:100%; }
+  .flash { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; }
+  .legend { position:absolute; left:12px; top:12px; display:flex; flex-direction:column; gap:4px; font-size:12px; background:rgba(0,0,0,.45); padding:8px 10px; border-radius:8px; }
+  .legend i { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  .ro { display:grid; grid-template-columns:repeat(3,1fr); gap:10px 14px; margin:14px 0 8px; }
+  .ro small { display:block; color:var(--muted); font-size:12px; } .ro b { font-family:ui-monospace,Menlo,monospace; font-size:15px; }
+  .bar { height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; margin-bottom:14px; }
+  .bar div { height:100%; width:0; background:linear-gradient(90deg,var(--violet),#fff); transition:width .1s linear; }
+  .controls label { display:block; font-size:14px; margin:10px 0; } .controls label span { float:right; color:var(--muted); font-family:ui-monospace,Menlo,monospace; }
+  .controls input[type=range] { width:100%; accent-color:var(--teal); margin-top:4px; }
+  .controls .chk { display:flex; gap:8px; align-items:center; } .controls .chk small { color:var(--muted); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; }
+  .btn { background:var(--teal); color:#021; border:0; padding:9px 16px; border-radius:999px; font-weight:600; cursor:pointer; font-size:14px; }
+  .btn.ghost { background:var(--card); color:var(--text); border:1px solid var(--stroke); } .btn.small { font-size:12px; padding:7px 12px; }
 </style>
 </head>
 <body>
@@ -49,10 +65,41 @@
     <p class="tag">The Penrose–Hameroff theory of consciousness, as an interactive 3D model you can run, poke, and argue with. For iPhone and iPad.</p>
     <div class="ctas">
       <a class="cta" href="https://apps.apple.com/app/id6819059305">Download on the App Store</a>
-      <a class="cta secondary" href="#theory">What is Orch-OR?</a>
+      <a class="cta secondary" href="#try">Try the 3D simulation</a>
     </div>
     <p class="note">Version 1.0 is in App Store review. The link goes live on approval. Free, no account, no data collected.</p>
   </header>
+
+
+  <section id="try">
+    <h2>Try it in your browser</h2>
+    <p class="note" style="margin-top:-8px">Drag to rotate, scroll to zoom. Same model as the app: superposition (violet) grows by orchestration, ∫E<sub>G</sub>dt climbs to ħ, then the coherent set collapses in a white flash.</p>
+    <div id="sim" class="sim">
+      <canvas id="sim-canvas"></canvas>
+      <div id="flash" class="flash"></div>
+      <div class="legend"><span><i style="background:#4db39e"></i>state A</span><span><i style="background:#4073f2"></i>state B</span><span><i style="background:#b380ff"></i>superposition</span><span><i style="background:#fff"></i>objective reduction</span></div>
+    </div>
+    <div class="ro">
+      <div><small>superposed dimers</small><b id="ro-sup" style="color:var(--violet)">0 / 390</b></div>
+      <div><small>represents</small><b id="ro-eff">0 tubulins</b></div>
+      <div><small>E<sub>G</sub></small><b id="ro-eg">0 J</b></div>
+      <div><small>τ = ħ/E<sub>G</sub></small><b id="ro-tau" style="color:var(--amber)">never</b></div>
+      <div><small>OR events</small><b id="ro-ev">0</b></div>
+      <div><small>event rate</small><b id="ro-rate" style="color:var(--teal)">—</b></div>
+    </div>
+    <div class="bar"><div id="ro-bar"></div></div>
+    <div class="controls">
+      <div class="row"><button id="b-run" class="btn">Pause</button><button id="b-reset" class="btn ghost">Reset</button></div>
+      <label>Orchestration (MAP coupling) <span id="v-orch">0.60</span><input id="c-orch" type="range" min="0" max="1" step="0.01" value="0.6"></label>
+      <label>Each displayed dimer stands for <span id="v-rep">10^7.7</span> dimers<input id="c-rep" type="range" min="5" max="9" step="0.1" value="7.7"></label>
+      <label>Slow motion <span id="v-slow">40×</span><input id="c-slow" type="range" min="1" max="200" step="1" value="40"></label>
+      <label class="chk"><input id="c-dec" type="checkbox"> Environmental decoherence <small>(off = Orch-OR's assumption that microtubules are shielded)</small></label>
+      <div id="dec-row" style="display:none">
+        <label>Decoherence time <span id="v-dec">100.0 µs</span><input id="c-decexp" type="range" min="-13" max="0" step="0.1" value="-4"></label>
+        <div class="row"><button id="b-teg" class="btn ghost small">Tegmark 2000: 10⁻¹³ s</button><button id="b-hag" class="btn ghost small">Hagan et al. 2002: 10⁻⁴ s</button></div>
+      </div>
+    </div>
+  </section>
 
   <div class="shots">
     <img src="assets/or-1.png" alt="3D microtubule lattice with tubulin states">
@@ -103,5 +150,7 @@
     © 2026 John Seong · Orch
   </footer>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="sim.js"></script>
 </body>
 </html>
