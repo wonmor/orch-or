@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orch-OR Visualizer</title>
+<meta name="description" content="An iOS app that turns the Penrose–Hameroff Orch-OR theory of consciousness into an interactive 3D model you can run, poke, and argue with.">
+<meta property="og:title" content="Orch-OR Visualizer">
+<meta property="og:description" content="Watch tubulin superpositions grow across a 3D microtubule and collapse into moments. Both sides of the debate included.">
+<meta property="og:image" content="https://wonmor.github.io/orch-or/assets/or-1.png">
+<link rel="icon" href="assets/icon-orchor.png">
+<style>
+  :root { --bg:#050a17; --bg2:#0d1a33; --card:rgba(255,255,255,.07); --stroke:rgba(255,255,255,.1); --teal:#66e3c7; --violet:#b380ff; --amber:#ffb84d; --text:#e8ecf4; --muted:#9aa5bd; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif; color:var(--text); background:linear-gradient(180deg,var(--bg2),var(--bg) 40%); line-height:1.55; }
+  a { color:var(--teal); text-decoration:none; } a:hover { text-decoration:underline; }
+  .wrap { max-width:1040px; margin:0 auto; padding:0 20px; }
+  header { padding:72px 0 40px; text-align:center; }
+  header img.icon { width:112px; height:112px; border-radius:26px; box-shadow:0 20px 60px rgba(102,227,199,.25); }
+  h1 { font-size:clamp(34px,6vw,56px); margin:22px 0 8px; letter-spacing:-.02em; }
+  .tag { font-size:clamp(17px,2.4vw,21px); color:var(--muted); max-width:640px; margin:0 auto 26px; }
+  .cta { display:inline-flex; gap:10px; align-items:center; background:var(--teal); color:#021; font-weight:600; padding:12px 20px; border-radius:999px; }
+  .cta.secondary { background:var(--card); color:var(--text); border:1px solid var(--stroke); }
+  .ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .note { font-size:13px; color:var(--muted); margin-top:12px; }
+  .shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:36px 0; }
+  .shots img { width:100%; border-radius:22px; border:1px solid var(--stroke); background:#000; }
+  section { padding:34px 0; }
+  h2 { font-size:28px; margin:0 0 18px; letter-spacing:-.01em; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--stroke); border-radius:16px; padding:18px; }
+  .card h3 { margin:0 0 6px; font-size:17px; }
+  .card p { margin:0; color:var(--muted); font-size:15px; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; vertical-align:middle; }
+  .formula { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(0,0,0,.35); padding:14px 18px; border-radius:12px; display:inline-block; font-size:18px; }
+  .sibling { display:grid; grid-template-columns:1fr; gap:20px; align-items:center; }
+  @media (min-width:760px) { .sibling { grid-template-columns:1.2fr 1fr; } }
+  .sibling .imgs { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .sibling img { width:100%; border-radius:18px; border:1px solid var(--stroke); }
+  footer { padding:40px 0 60px; color:var(--muted); font-size:14px; border-top:1px solid var(--stroke); margin-top:40px; }
+  footer .links { display:flex; gap:18px; flex-wrap:wrap; margin-bottom:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="icon" src="assets/icon-orchor.png" alt="Orch-OR Visualizer icon">
+    <h1>Orch-OR Visualizer</h1>
+    <p class="tag">The Penrose–Hameroff theory of consciousness, as an interactive 3D model you can run, poke, and argue with. For iPhone and iPad.</p>
+    <div class="ctas">
+      <a class="cta" href="https://apps.apple.com/app/id6819059305">Download on the App Store</a>
+      <a class="cta secondary" href="#theory">What is Orch-OR?</a>
+    </div>
+    <p class="note">Version 1.0 is in App Store review. The link goes live on approval. Free, no account, no data collected.</p>
+  </header>
+
+  <div class="shots">
+    <img src="assets/or-1.png" alt="3D microtubule lattice with tubulin states">
+    <img src="assets/or-2.png" alt="Timeline of coherence and objective-reduction events">
+    <img src="assets/or-3.png" alt="Diósi–Penrose calculator">
+    <img src="assets/or-4.png" alt="Learn tab with the theory and its critics">
+  </div>
+
+  <section>
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h3><span class="dot" style="background:var(--teal)"></span>3D microtubule</h3><p>A 13-protofilament tubulin lattice you can spin and zoom. Superposition (violet) seeds, spreads by orchestration, and collapses in a flash of objective reduction.</p></div>
+      <div class="card"><h3><span class="dot" style="background:var(--amber)"></span>Live physics</h3><p>Gravitational self-energy E<sub>G</sub>, the collapse time τ = ħ/E<sub>G</sub>, and the running ∫E<sub>G</sub>dt → ħ that triggers each event, calibrated to Hameroff &amp; Penrose (2014).</p></div>
+      <div class="card"><h3><span class="dot" style="background:var(--violet)"></span>Timeline</h3><p>Coherence over time and every collapse, with the event rate compared to 40 Hz gamma synchrony.</p></div>
+      <div class="card"><h3><span class="dot" style="background:#ff7390"></span>Decoherence switch</h3><p>Turn on environmental decoherence at Tegmark's 10⁻¹³ s or Hagan et al.'s 10⁻⁴ s and see whether coherence ever survives. This is the heart of the dispute.</p></div>
+      <div class="card"><h3><span class="dot" style="background:var(--teal)"></span>Calculator</h3><p>How many tubulins and neurons a 25 ms conscious moment would need, with every relevant timescale on one log axis.</p></div>
+      <div class="card"><h3><span class="dot" style="background:var(--violet)"></span>Learn</h3><p>Nine short cards: the claim, microtubules, tubulin qubits, objective reduction, orchestration, the 40 Hz argument, the decoherence objection, the evidence, and where the theory stands. Eleven references.</p></div>
+    </div>
+  </section>
+
+  <section id="theory">
+    <h2>The theory in sixty seconds</h2>
+    <p>Orchestrated Objective Reduction is physicist Roger Penrose's and anaesthesiologist Stuart Hameroff's proposal that consciousness arises from quantum events inside the microtubules of neurons. Tubulin proteins are held to enter superpositions, become entangled across the lattice, and then collapse on their own through a gravitational mechanism Penrose calls objective reduction. Each collapse is a discrete moment of experience.</p>
+    <p class="formula">τ ≈ ħ / E<sub>G</sub></p>
+    <p>The threshold is set by the gravitational self-energy of the difference between the superposed branches. Hameroff and Penrose calibrate it so that about 2×10¹⁰ tubulins self-collapse in 25 ms, matching 40 Hz gamma synchrony.</p>
+    <p>The main objection is decoherence: the brain is warm and wet, and Max Tegmark calculated that microtubule superpositions would die in about 10⁻¹³ s. Hagan, Hameroff and Tuszynski argued for 10⁻⁴ s with shielding. Both are far short of 25 ms. Proponents point to recent experiments on anaesthetics acting on microtubules and on collective optical effects in tubulin. The app presents all of this and lets you compute the numbers yourself.</p>
+    <p class="note">Orch-OR is a minority view in neuroscience. The app is a teaching model of a contested theory, and says so.</p>
+  </section>
+
+  <section>
+    <h2>Also by Orch: Orch Neural Network</h2>
+    <div class="sibling">
+      <div>
+        <p>A sister app that runs a real 82-million-parameter GPT-2 on your device and lets you watch it predict your next word, layer by layer: attention heads, firing neurons, the logit lens, and every weight matrix as a heatmap. Framed as "how your keyboard's suggestions work".</p>
+        <p><a class="cta secondary" href="https://apps.apple.com/app/id6819051390">Orch Neural Network on the App Store</a></p>
+        <p class="note">Also in review. Link goes live on approval.</p>
+      </div>
+      <div class="imgs"><img src="assets/nn-1.png" alt="Orch Neural Network predict tab"><img src="assets/nn-2.png" alt="Orch Neural Network inside tab"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="support.html">Support</a>
+      <a href="https://github.com/wonmor/orch-or">This site on GitHub</a>
+    </div>
+    © 2026 John Seong · Orch
+  </footer>
+</div>
+</body>
+</html>
