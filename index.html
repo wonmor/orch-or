@@ -4,150 +4,181 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Orch-OR Visualizer</title>
-<meta name="description" content="An iOS app that turns the Penrose–Hameroff Orch-OR theory of consciousness into an interactive 3D model you can run, poke, and argue with.">
+<meta name="description" content="An iOS app and browser model that turns the Penrose–Hameroff Orch-OR theory of consciousness into something you can run, poke, and argue with.">
 <meta property="og:title" content="Orch-OR Visualizer">
 <meta property="og:description" content="Watch tubulin superpositions grow across a 3D microtubule and collapse into moments. Both sides of the debate included.">
 <meta property="og:image" content="https://wonmor.github.io/orch-or/assets/or-1.png">
 <link rel="icon" href="assets/icon-orchor.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#050a17; --bg2:#0d1a33; --card:rgba(255,255,255,.07); --stroke:rgba(255,255,255,.1); --teal:#66e3c7; --violet:#b380ff; --amber:#ffb84d; --text:#e8ecf4; --muted:#9aa5bd; }
+  :root { --paper:#f4f1ea; --ink:#141414; --mute:#6b6b66; --rule:#141414; --red:#d9341f; --blue:#1d4f9e; --yellow:#f0c22a; --panel:#0b0f1d; }
   * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif; color:var(--text); background:linear-gradient(180deg,var(--bg2),var(--bg) 40%); line-height:1.55; }
-  a { color:var(--teal); text-decoration:none; } a:hover { text-decoration:underline; }
-  .wrap { max-width:1040px; margin:0 auto; padding:0 20px; }
-  header { padding:72px 0 40px; text-align:center; }
-  header img.icon { width:112px; height:112px; border-radius:26px; box-shadow:0 20px 60px rgba(102,227,199,.25); }
-  h1 { font-size:clamp(34px,6vw,56px); margin:22px 0 8px; letter-spacing:-.02em; }
-  .tag { font-size:clamp(17px,2.4vw,21px); color:var(--muted); max-width:640px; margin:0 auto 26px; }
-  .cta { display:inline-flex; gap:10px; align-items:center; background:var(--teal); color:#021; font-weight:600; padding:12px 20px; border-radius:999px; }
-  .cta.secondary { background:var(--card); color:var(--text); border:1px solid var(--stroke); }
-  .ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .note { font-size:13px; color:var(--muted); margin-top:12px; }
-  .shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:36px 0; }
-  .shots img { width:100%; border-radius:22px; border:1px solid var(--stroke); background:#000; }
-  section { padding:34px 0; }
-  h2 { font-size:28px; margin:0 0 18px; letter-spacing:-.01em; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
-  .card { background:var(--card); border:1px solid var(--stroke); border-radius:16px; padding:18px; }
-  .card h3 { margin:0 0 6px; font-size:17px; }
-  .card p { margin:0; color:var(--muted); font-size:15px; }
-  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; vertical-align:middle; }
-  .formula { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; background:rgba(0,0,0,.35); padding:14px 18px; border-radius:12px; display:inline-block; font-size:18px; }
-  .sibling { display:grid; grid-template-columns:1fr; gap:20px; align-items:center; }
-  @media (min-width:760px) { .sibling { grid-template-columns:1.2fr 1fr; } }
-  .sibling .imgs { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .sibling img { width:100%; border-radius:18px; border:1px solid var(--stroke); }
-  footer { padding:40px 0 60px; color:var(--muted); font-size:14px; border-top:1px solid var(--stroke); margin-top:40px; }
-  footer .links { display:flex; gap:18px; flex-wrap:wrap; margin-bottom:10px; }
-
-  .sim { position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--stroke); background:#050a17; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Jost",-apple-system,system-ui,sans-serif; font-weight:300; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; text-decoration:none; border-bottom:1px solid var(--ink); } a:hover { border-color:var(--red); }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:28px 0; border-bottom:1px solid var(--rule); }
+  nav .brand { font-weight:400; letter-spacing:.32em; text-transform:uppercase; font-size:12px; border:0; }
+  nav .links a { border:0; font-size:12px; letter-spacing:.22em; text-transform:uppercase; margin-left:28px; }
+  header { display:grid; grid-template-columns:1fr; gap:36px; padding:88px 0 64px; border-bottom:1px solid var(--rule); align-items:center; }
+  @media (min-width:860px) { header { grid-template-columns:1.25fr 1fr; } }
+  h1 { font-weight:200; font-size:clamp(44px,8vw,92px); line-height:.95; letter-spacing:-.02em; margin:0 0 26px; }
+  h1 em { font-style:normal; font-weight:400; }
+  .lede { font-size:clamp(18px,2.2vw,22px); font-weight:300; max-width:520px; margin:0 0 36px; color:var(--ink); }
+  .kicker { font-size:11px; letter-spacing:.36em; text-transform:uppercase; color:var(--mute); margin:0 0 22px; font-weight:400; }
+  .btns { display:flex; gap:14px; flex-wrap:wrap; }
+  .btn { border:1px solid var(--ink); padding:13px 22px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; font-weight:400; }
+  .btn.primary { background:var(--ink); color:var(--paper); } .btn.primary:hover { background:var(--red); border-color:var(--red); }
+  .note { font-size:13px; color:var(--mute); margin-top:18px; }
+  /* bauhaus composition */
+  .compo { position:relative; aspect-ratio:1; max-width:420px; margin:0 auto; width:100%; }
+  .compo i { position:absolute; display:block; }
+  .compo .c1 { width:56%; height:56%; border-radius:50%; background:var(--red); left:0; top:8%; }
+  .compo .c2 { width:38%; height:38%; background:var(--blue); right:4%; bottom:6%; }
+  .compo .c3 { width:0; height:0; border-left:19% solid transparent; border-right:19% solid transparent; border-bottom:34% solid var(--yellow); right:12%; top:0; }
+  .compo .c4 { width:100%; height:1px; background:var(--ink); left:0; top:62%; }
+  .compo .c5 { width:1px; height:100%; background:var(--ink); left:58%; top:0; }
+  .compo img { position:absolute; width:26%; left:45%; top:50%; border-radius:18%; box-shadow:0 10px 30px rgba(0,0,0,.18); }
+  section { padding:72px 0; border-bottom:1px solid var(--rule); }
+  h2 { font-weight:200; font-size:clamp(30px,4.5vw,48px); letter-spacing:-.01em; margin:0 0 10px; line-height:1.05; }
+  .num { font-size:11px; letter-spacing:.36em; text-transform:uppercase; color:var(--mute); font-weight:400; display:block; margin-bottom:14px; }
+  p { max-width:640px; }
+  .shots { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (min-width:760px) { .shots { grid-template-columns:repeat(4,1fr); } }
+  .shots img { width:100%; display:block; border:1px solid var(--ink); }
+  .feat { display:grid; grid-template-columns:1fr; gap:0; border-top:1px solid var(--rule); margin-top:36px; }
+  @media (min-width:760px) { .feat { grid-template-columns:repeat(3,1fr); } }
+  .feat div { padding:26px 26px 26px 0; border-bottom:1px solid var(--rule); }
+  @media (min-width:760px) { .feat div { border-right:1px solid var(--rule); } .feat div:nth-child(3n) { border-right:0; } }
+  .feat h3 { font-weight:400; font-size:15px; letter-spacing:.14em; text-transform:uppercase; margin:0 0 8px; }
+  .feat h3 b { display:inline-block; width:10px; height:10px; margin-right:10px; vertical-align:middle; }
+  .feat p { font-size:15px; color:var(--mute); margin:0; }
+  .formula { font-family:"Jost"; font-weight:200; font-size:clamp(40px,7vw,72px); letter-spacing:.02em; margin:28px 0; }
+  .sib { display:grid; grid-template-columns:1fr; gap:28px; align-items:start; }
+  @media (min-width:760px) { .sib { grid-template-columns:1.1fr .9fr; } }
+  .sib .imgs { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .sib img { width:100%; border:1px solid var(--ink); }
+  footer { padding:40px 0 70px; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+  footer a { border:0; margin-right:22px; }
+  /* simulation chrome */
+  .sim { position:relative; background:var(--panel); border:1px solid var(--ink); }
   .sim canvas { display:block; width:100%; }
   .flash { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; }
-  .legend { position:absolute; left:12px; top:12px; display:flex; flex-direction:column; gap:4px; font-size:12px; background:rgba(0,0,0,.45); padding:8px 10px; border-radius:8px; }
-  .legend i { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
-  .ro { display:grid; grid-template-columns:repeat(3,1fr); gap:10px 14px; margin:14px 0 8px; }
-  .ro small { display:block; color:var(--muted); font-size:12px; } .ro b { font-family:ui-monospace,Menlo,monospace; font-size:15px; }
-  .bar { height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; margin-bottom:14px; }
-  .bar div { height:100%; width:0; background:linear-gradient(90deg,var(--violet),#fff); transition:width .1s linear; }
-  .controls label { display:block; font-size:14px; margin:10px 0; } .controls label span { float:right; color:var(--muted); font-family:ui-monospace,Menlo,monospace; }
-  .controls input[type=range] { width:100%; accent-color:var(--teal); margin-top:4px; }
-  .controls .chk { display:flex; gap:8px; align-items:center; } .controls .chk small { color:var(--muted); }
-  .row { display:flex; gap:10px; flex-wrap:wrap; }
-  .btn { background:var(--teal); color:#021; border:0; padding:9px 16px; border-radius:999px; font-weight:600; cursor:pointer; font-size:14px; }
-  .btn.ghost { background:var(--card); color:var(--text); border:1px solid var(--stroke); } .btn.small { font-size:12px; padding:7px 12px; }
+  .legend { position:absolute; left:14px; top:14px; display:flex; flex-direction:column; gap:5px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#ddd; }
+  .legend i { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:8px; }
+  .ro { display:grid; grid-template-columns:repeat(3,1fr); gap:18px 24px; margin:26px 0 10px; }
+  @media (min-width:760px) { .ro { grid-template-columns:repeat(6,1fr); } }
+  .ro small { display:block; font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--mute); margin-bottom:4px; }
+  .ro b { font-weight:300; font-size:20px; letter-spacing:-.01em; }
+  .bar { height:2px; background:#ddd8cc; margin:16px 0 30px; } .bar div { height:100%; width:0; background:var(--ink); transition:width .1s linear; }
+  .controls { display:grid; grid-template-columns:1fr; gap:4px 40px; } @media (min-width:760px) { .controls { grid-template-columns:1fr 1fr; } }
+  .controls label { display:block; font-size:12px; letter-spacing:.18em; text-transform:uppercase; margin:12px 0; color:var(--ink); }
+  .controls label span { float:right; color:var(--mute); letter-spacing:0; text-transform:none; font-size:13px; }
+  .controls input[type=range] { width:100%; accent-color:var(--ink); margin-top:8px; }
+  .controls .chk { display:flex; gap:10px; align-items:center; } .controls .chk small { text-transform:none; letter-spacing:0; color:var(--mute); font-size:12px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px; }
+  .btn-sm { background:none; border:1px solid var(--ink); padding:9px 16px; font:inherit; font-size:11px; letter-spacing:.22em; text-transform:uppercase; cursor:pointer; color:var(--ink); }
+  .btn-sm.fill { background:var(--ink); color:var(--paper); }
+  .btn-sm:hover { border-color:var(--red); color:var(--red); } .btn-sm.fill:hover { background:var(--red); color:var(--paper); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav>
+    <a class="brand" href="#">Orch</a>
+    <div class="links"><a href="#try">Simulation</a><a href="#theory">Theory</a><a href="https://github.com/wonmor/OrchOR">Code</a><a href="https://github.com/wonmor/orch-or-quantum">Paper</a></div>
+  </nav>
+
   <header>
-    <img class="icon" src="assets/icon-orchor.png" alt="Orch-OR Visualizer icon">
-    <h1>Orch-OR Visualizer</h1>
-    <p class="tag">The Penrose–Hameroff theory of consciousness, as an interactive 3D model you can run, poke, and argue with. For iPhone and iPad.</p>
-    <div class="ctas">
-      <a class="cta" href="https://apps.apple.com/app/id6819059305">Download on the App Store</a>
-      <a class="cta secondary" href="#try">Try the 3D simulation</a>
+    <div>
+      <p class="kicker">iPhone · iPad · Browser</p>
+      <h1>Orch-OR<br><em>Visualizer</em></h1>
+      <p class="lede">The Penrose–Hameroff theory of consciousness as a model you can run, poke, and argue with.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://apps.apple.com/app/id6819059305">App Store</a>
+        <a class="btn" href="#try">Run it here</a>
+      </div>
+      <p class="note">Version 1.0 is in App Store review. Free. No account, no data collected.</p>
     </div>
-    <p class="note">Version 1.0 is in App Store review. The link goes live on approval. Free, no account, no data collected.</p>
+    <div class="compo" aria-hidden="true"><i class="c1"></i><i class="c3"></i><i class="c2"></i><i class="c4"></i><i class="c5"></i><img src="assets/icon-orchor.png" alt=""></div>
   </header>
-
-
   <section id="try">
-    <h2>Try it in your browser</h2>
-    <p class="note" style="margin-top:-8px">Drag to rotate, scroll to zoom. Same model as the app: superposition (violet) grows by orchestration, ∫E<sub>G</sub>dt climbs to ħ, then the coherent set collapses in a white flash.</p>
+    <span class="num">01 — Simulation</span>
+    <h2>Run the theory</h2>
+    <p class="note" style="margin-top:0;margin-bottom:26px">Drag to rotate, scroll to zoom. Same model as the app: superposition (violet) grows by orchestration, ∫E<sub>G</sub>dt climbs to ħ, then the coherent set collapses in a white flash.</p>
     <div id="sim" class="sim">
       <canvas id="sim-canvas"></canvas>
       <div id="flash" class="flash"></div>
-      <div class="legend"><span><i style="background:#4db39e"></i>state A</span><span><i style="background:#4073f2"></i>state B</span><span><i style="background:#b380ff"></i>superposition</span><span><i style="background:#fff"></i>objective reduction</span></div>
+      <div class="legend"><span><i style="background:#4db39e"></i>State A</span><span><i style="background:#4073f2"></i>State B</span><span><i style="background:#b380ff"></i>Superposition</span><span><i style="background:#fff"></i>Objective reduction</span></div>
     </div>
     <div class="ro">
-      <div><small>superposed dimers</small><b id="ro-sup" style="color:var(--violet)">0 / 390</b></div>
+      <div><small>superposed dimers</small><b id="ro-sup" style="color:var(--blue)">0 / 390</b></div>
       <div><small>represents</small><b id="ro-eff">0 tubulins</b></div>
       <div><small>E<sub>G</sub></small><b id="ro-eg">0 J</b></div>
-      <div><small>τ = ħ/E<sub>G</sub></small><b id="ro-tau" style="color:var(--amber)">never</b></div>
+      <div><small>τ = ħ/E<sub>G</sub></small><b id="ro-tau" style="color:var(--red)">never</b></div>
       <div><small>OR events</small><b id="ro-ev">0</b></div>
-      <div><small>event rate</small><b id="ro-rate" style="color:var(--teal)">—</b></div>
+      <div><small>event rate</small><b id="ro-rate">—</b></div>
     </div>
     <div class="bar"><div id="ro-bar"></div></div>
     <div class="controls">
-      <div class="row"><button id="b-run" class="btn">Pause</button><button id="b-reset" class="btn ghost">Reset</button></div>
+      <div class="row"><button id="b-run" class="btn-sm fill">Pause</button><button id="b-reset" class="btn-sm">Reset</button></div>
       <label>Orchestration (MAP coupling) <span id="v-orch">0.60</span><input id="c-orch" type="range" min="0" max="1" step="0.01" value="0.6"></label>
       <label>Each displayed dimer stands for <span id="v-rep">10^7.7</span> dimers<input id="c-rep" type="range" min="5" max="9" step="0.1" value="7.7"></label>
       <label>Slow motion <span id="v-slow">40×</span><input id="c-slow" type="range" min="1" max="200" step="1" value="40"></label>
       <label class="chk"><input id="c-dec" type="checkbox"> Environmental decoherence <small>(off = Orch-OR's assumption that microtubules are shielded)</small></label>
       <div id="dec-row" style="display:none">
         <label>Decoherence time <span id="v-dec">100.0 µs</span><input id="c-decexp" type="range" min="-13" max="0" step="0.1" value="-4"></label>
-        <div class="row"><button id="b-teg" class="btn ghost small">Tegmark 2000: 10⁻¹³ s</button><button id="b-hag" class="btn ghost small">Hagan et al. 2002: 10⁻⁴ s</button></div>
+        <div class="row"><button id="b-teg" class="btn-sm">Tegmark 2000: 10⁻¹³ s</button><button id="b-hag" class="btn-sm">Hagan et al. 2002: 10⁻⁴ s</button></div>
       </div>
     </div>
   </section>
 
-  <div class="shots">
-    <img src="assets/or-1.png" alt="3D microtubule lattice with tubulin states">
-    <img src="assets/or-2.png" alt="Timeline of coherence and objective-reduction events">
-    <img src="assets/or-3.png" alt="Diósi–Penrose calculator">
-    <img src="assets/or-4.png" alt="Learn tab with the theory and its critics">
-  </div>
 
   <section>
-    <h2>What it does</h2>
-    <div class="grid">
-      <div class="card"><h3><span class="dot" style="background:var(--teal)"></span>3D microtubule</h3><p>A 13-protofilament tubulin lattice you can spin and zoom. Superposition (violet) seeds, spreads by orchestration, and collapses in a flash of objective reduction.</p></div>
-      <div class="card"><h3><span class="dot" style="background:var(--amber)"></span>Live physics</h3><p>Gravitational self-energy E<sub>G</sub>, the collapse time τ = ħ/E<sub>G</sub>, and the running ∫E<sub>G</sub>dt → ħ that triggers each event, calibrated to Hameroff &amp; Penrose (2014).</p></div>
-      <div class="card"><h3><span class="dot" style="background:var(--violet)"></span>Timeline</h3><p>Coherence over time and every collapse, with the event rate compared to 40 Hz gamma synchrony.</p></div>
-      <div class="card"><h3><span class="dot" style="background:#ff7390"></span>Decoherence switch</h3><p>Turn on environmental decoherence at Tegmark's 10⁻¹³ s or Hagan et al.'s 10⁻⁴ s and see whether coherence ever survives. This is the heart of the dispute.</p></div>
-      <div class="card"><h3><span class="dot" style="background:var(--teal)"></span>Calculator</h3><p>How many tubulins and neurons a 25 ms conscious moment would need, with every relevant timescale on one log axis.</p></div>
-      <div class="card"><h3><span class="dot" style="background:var(--violet)"></span>Learn</h3><p>Nine short cards: the claim, microtubules, tubulin qubits, objective reduction, orchestration, the 40 Hz argument, the decoherence objection, the evidence, and where the theory stands. Eleven references.</p></div>
+    <span class="num">02 — Screens</span>
+    <h2>Four views of one process</h2>
+    <div class="shots" style="margin-top:30px">
+      <img src="assets/or-1.png" alt="3D microtubule lattice with tubulin states">
+      <img src="assets/or-2.png" alt="Timeline of coherence and objective-reduction events">
+      <img src="assets/or-3.png" alt="Diósi–Penrose calculator">
+      <img src="assets/or-4.png" alt="Learn tab with the theory and its critics">
+    </div>
+    <div class="feat">
+      <div><h3><b style="background:var(--red)"></b>Microtubule</h3><p>A 13-protofilament tubulin lattice you can spin and zoom. Superposition seeds, spreads by orchestration, collapses in a flash of objective reduction.</p></div>
+      <div><h3><b style="background:var(--blue)"></b>Live physics</h3><p>Gravitational self-energy E<sub>G</sub>, the collapse time τ = ħ/E<sub>G</sub>, and the running ∫E<sub>G</sub>dt → ħ that triggers each event, calibrated to Hameroff &amp; Penrose (2014).</p></div>
+      <div><h3><b style="background:var(--yellow)"></b>Timeline</h3><p>Coherence over time and every collapse, with the event rate set against 40 Hz gamma synchrony.</p></div>
+      <div><h3><b style="background:var(--ink)"></b>Decoherence</h3><p>Switch on environmental decoherence at Tegmark's 10⁻¹³ s or Hagan et al.'s 10⁻⁴ s and see whether coherence ever survives.</p></div>
+      <div><h3><b style="background:var(--red)"></b>Calculator</h3><p>How many tubulins and neurons a 25 ms moment would need, with every relevant timescale on one log axis.</p></div>
+      <div><h3><b style="background:var(--blue)"></b>Learn</h3><p>Nine short cards: the claim, the mechanism, the 40 Hz argument, the decoherence objection, the evidence, and where the theory stands. Eleven references.</p></div>
     </div>
   </section>
 
   <section id="theory">
-    <h2>The theory in sixty seconds</h2>
-    <p>Orchestrated Objective Reduction is physicist Roger Penrose's and anaesthesiologist Stuart Hameroff's proposal that consciousness arises from quantum events inside the microtubules of neurons. Tubulin proteins are held to enter superpositions, become entangled across the lattice, and then collapse on their own through a gravitational mechanism Penrose calls objective reduction. Each collapse is a discrete moment of experience.</p>
-    <p class="formula">τ ≈ ħ / E<sub>G</sub></p>
+    <span class="num">03 — Theory</span>
+    <h2>Sixty seconds of Orch-OR</h2>
+    <p>Orchestrated Objective Reduction is Roger Penrose's and Stuart Hameroff's proposal that consciousness arises from quantum events inside the microtubules of neurons. Tubulin proteins enter superpositions, become entangled across the lattice, and collapse on their own through a gravitational mechanism Penrose calls objective reduction. Each collapse is a discrete moment of experience.</p>
+    <div class="formula">τ ≈ ħ / E<sub>G</sub></div>
     <p>The threshold is set by the gravitational self-energy of the difference between the superposed branches. Hameroff and Penrose calibrate it so that about 2×10¹⁰ tubulins self-collapse in 25 ms, matching 40 Hz gamma synchrony.</p>
-    <p>The main objection is decoherence: the brain is warm and wet, and Max Tegmark calculated that microtubule superpositions would die in about 10⁻¹³ s. Hagan, Hameroff and Tuszynski argued for 10⁻⁴ s with shielding. Both are far short of 25 ms. Proponents point to recent experiments on anaesthetics acting on microtubules and on collective optical effects in tubulin. The app presents all of this and lets you compute the numbers yourself.</p>
-    <p class="note">Orch-OR is a minority view in neuroscience. The app is a teaching model of a contested theory, and says so.</p>
+    <p>The main objection is decoherence. The brain is warm and wet; Max Tegmark put microtubule coherence at 10⁻¹³ s, and Hagan, Hameroff and Tuszynski argued for 10⁻⁴ s with shielding. Both fall short of 25 ms. A companion simulation of the theory on tubulin qubits finds that 40 Hz moments need coherence lasting about 76 ms: <a href="https://github.com/wonmor/orch-or-quantum">paper and code</a>.</p>
+    <p class="note">Orch-OR is a minority view in neuroscience. This is a teaching model of a contested theory, and says so.</p>
   </section>
 
   <section>
-    <h2>Also by Orch: Orch Neural Network</h2>
-    <div class="sibling">
+    <span class="num">04 — Also by Orch</span>
+    <h2>Orch Neural Network</h2>
+    <div class="sib" style="margin-top:26px">
       <div>
-        <p>A sister app that runs a real 82-million-parameter GPT-2 on your device and lets you watch it predict your next word, layer by layer: attention heads, firing neurons, the logit lens, and every weight matrix as a heatmap. Framed as "how your keyboard's suggestions work".</p>
-        <p><a class="cta secondary" href="https://apps.apple.com/app/id6819051390">Orch Neural Network on the App Store</a></p>
-        <p class="note">Also in review. Link goes live on approval.</p>
+        <p>A sister app that runs a real 82-million-parameter GPT-2 on your device and lets you watch it predict your next word, layer by layer: attention heads, firing neurons, the logit lens, and every weight matrix as a heatmap. Framed as how your keyboard's suggestions work.</p>
+        <p><a class="btn" href="https://apps.apple.com/app/id6819051390">App Store</a></p>
+        <p class="note">Also in review. Link goes live on approval. <a href="https://github.com/wonmor/OrchNeuralNetwork">Code</a>.</p>
       </div>
       <div class="imgs"><img src="assets/nn-1.png" alt="Orch Neural Network predict tab"><img src="assets/nn-2.png" alt="Orch Neural Network inside tab"></div>
     </div>
   </section>
 
   <footer>
-    <div class="links">
-      <a href="privacy.html">Privacy policy</a>
-      <a href="support.html">Support</a>
-      <a href="https://github.com/wonmor/orch-or">This site on GitHub</a>
-    </div>
-    © 2026 Wonmo (John) Seong · Orch
+    <div><a href="privacy.html">Privacy</a><a href="support.html">Support</a><a href="https://github.com/wonmor/orch-or">Site source</a></div>
+    <div>© 2026 Wonmo (John) Seong · Orch</div>
   </footer>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
